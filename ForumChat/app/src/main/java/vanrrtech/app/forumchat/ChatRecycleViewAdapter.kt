@@ -1,9 +1,11 @@
 package vanrrtech.app.forumchat
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
@@ -51,6 +53,14 @@ class ChatRecycleViewAdapter (ForumArrayList : ArrayList<UserDataModel.ForumChat
         holder.chatMessage?.text = chatContent?.chatMessage
         holder.chatDate?.text = chatContent?.dateChat
 
+        holder.chatUserName?.setTextColor(Color.parseColor("#FFFFFF"))
+        holder.chatMessage?.setTextColor(Color.parseColor("#FFFFFF"))
+        holder.chatDate?.setTextColor(Color.parseColor("#FFFFFF"))
+
+        if(chatContent?.chatUserName!!.equals(UserDataModel.mUserInformation?.userName)){
+            holder.container?.setBackgroundColor(Color.parseColor("#2a43d1"))
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -63,6 +73,7 @@ class ChatRecycleViewAdapter (ForumArrayList : ArrayList<UserDataModel.ForumChat
         var chatUserName : TextView? = null
         var chatMessage : TextView? = null
         var chatDate : TextView? = null
+        var container : LinearLayout? = null
 
         init{
             profilePicture = itemView.findViewById(R.id.chat_profile_picture)
@@ -70,6 +81,7 @@ class ChatRecycleViewAdapter (ForumArrayList : ArrayList<UserDataModel.ForumChat
             chatUserName = itemView.findViewById(R.id.chat_username)
             chatMessage = itemView.findViewById(R.id.chat_message)
             chatDate = itemView.findViewById(R.id.chat_time)
+            container = itemView.findViewById(R.id.chat_container)
         }
 
 

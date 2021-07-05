@@ -13,49 +13,114 @@
 
         <include layout="@layout/toolbar_layout" />
 
+<!--        <ScrollView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:fillViewport="true">-->
+
+<!--        </ScrollView>-->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chat_recycle_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="63dp"
             android:scrollbarStyle="outsideOverlay"/>
-
+<!--        <LinearLayout-->
+<!--            android:id="@+id/spacer_for_chat_list"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="10dp"-->
+<!--            android:orientation="horizontal" />-->
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/chatlayout_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp">
 
         <androidx.cardview.widget.CardView
-            android:layout_margin="5dp"
+            app:cardCornerRadius="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="8dp">
+            android:layout_margin="5dp"
+            app:cardElevation="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp">
+                android:background="#F0F0F0"
+                android:padding="5dp">
 
-                <EditText
-                    android:id="@+id/message_edit_text"
+
+                <ImageView
+                    android:id="@+id/image_attach_upload"
+                    android:layout_width="30dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="3dp"
+                    android:src="@drawable/ic_baseline_attach_file_24" />
+
+                <LinearLayout
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="10"
-                    android:layout_marginLeft="10dp"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="bottom"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp">
+
+                    <LinearLayout
+                        android:id="@+id/layout_image_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:layout_marginBottom="5dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/ic_baseline_image_24" />
+
+                        <TextView
+                            android:id="@+id/image_upload_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Image Name" />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/message_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FFFFFF"
+                        android:hint="Type your message here"
+                        android:maxLines="4"
+                        android:paddingVertical="10dp"
+                        android:paddingStart="5dp"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="true"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+
                 <Button
                     android:id="@+id/send_message_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:text="send"
-                    android:textSize="10sp"
-                    />
+                    android:textSize="10sp" />
 
             </LinearLayout>
 
