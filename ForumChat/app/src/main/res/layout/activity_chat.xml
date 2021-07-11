@@ -9,29 +9,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/chatlayout_parent"
         android:orientation="vertical">
 
         <include layout="@layout/toolbar_layout" />
 
-<!--        <ScrollView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:fillViewport="true">-->
+        <!--        <ScrollView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:fillViewport="true">-->
 
-<!--        </ScrollView>-->
+        <!--        </ScrollView>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chat_recycle_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:layout_marginBottom="63dp"
-            android:scrollbarStyle="outsideOverlay"/>
-<!--        <LinearLayout-->
-<!--            android:id="@+id/spacer_for_chat_list"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="10dp"-->
-<!--            android:orientation="horizontal" />-->
+            android:scrollbarStyle="outsideOverlay" />
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/spacer_for_chat_list"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="10dp"-->
+        <!--            android:orientation="horizontal" />-->
     </LinearLayout>
 
     <LinearLayout
@@ -99,7 +99,7 @@
                         android:id="@+id/message_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#FFFFFF"
+                        android:background="#F5F5F5"
                         android:hint="Type your message here"
                         android:maxLines="4"
                         android:paddingVertical="10dp"
@@ -111,16 +111,34 @@
                 </LinearLayout>
 
 
-                <Button
-                    android:id="@+id/send_message_button"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="3"
-                    android:text="send"
-                    android:textSize="10sp" />
+                    android:orientation="vertical">
+
+
+                    <ProgressBar
+                        android:id="@+id/chat_send"
+                        android:visibility="gone"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:indeterminate="true"
+                        android:backgroundTint="@color/grey_chat"/>
+
+                    <Button
+                        android:id="@+id/send_message_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/dark_chat_purple"
+                        android:text="send"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

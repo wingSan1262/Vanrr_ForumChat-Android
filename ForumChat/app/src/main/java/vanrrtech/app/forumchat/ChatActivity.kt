@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -94,6 +95,7 @@ class ChatActivity : AppCompatActivity() {
         }
 
         mToolbar = findViewById(R.id.toolbar)
+        mToolbar?.setBackgroundResource(R.color.grey_toolbar)
         setSupportActionBar(mToolbar)
         supportActionBar?.title = mForumData?.forumName
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_ios_24)
@@ -127,23 +129,38 @@ class ChatActivity : AppCompatActivity() {
 
                         mRecyclerView?.layoutManager = manager
                         mRecyclerView?.layoutManager = horizontalLayout
-                        val adapter = ChatRecycleViewAdapter(UserDataModel.mForumChatContentList!!, this@ChatActivity!!)
+                        val adapter = ChatRecycleViewAdapter(UserDataModel.mForumChatContentList!!, this@ChatActivity!!, this@ChatActivity)
 
 
                         mRecyclerView?.adapter = adapter
                         mRecyclerView?.scrollToPosition((mRecyclerView?.adapter as ChatRecycleViewAdapter).itemCount-1)
+                        var player = MediaPlayer.create(this@ChatActivity, R.raw.messagepop)
+                        player!!.start()
+
+                        mHandler?.sendEmptyMessageDelayed(ConstantDefine.PERIODIC_UPDATE_CHAT, 500)
 
                     }
                     ConstantDefine.FORUM_CHAT_QUERY -> {
                         queryForumChats(ConstantDefine.FORUM_CHAT_QUERY_RESULT)
                     }
 
+                    ConstantDefine.PERIODIC_UPDATE_CHAT -> {
+                        if(mRecyclerView?.adapter == null){
+                            queryForumChats(ConstantDefine.FORUM_CHAT_QUERY_RESULT)
+                            return
+                        }
+                        queryForumChats(ConstantDefine.FORUM_CHAT_UPDATE)
+
+                    }
+
                     ConstantDefine.FORUM_CHAT_REQUEST_CHAT -> {
+                        messageEditText?.setText("", TextView.BufferType.EDITABLE)
                         if(mRecyclerView?.adapter == null){
                             queryForumChats(ConstantDefine.FORUM_CHAT_QUERY_RESULT)
                             return
                         }
                         findViewById<LinearLayout>(R.id.layout_image_name).visibility = View.GONE
+                        findViewById<ProgressBar>(R.id.chat_send).visibility = View.GONE
                         imageHolder = null
                         findViewById<TextView>(R.id.image_upload_name).text = ""
                         queryForumChats(ConstantDefine.FORUM_CHAT_UPDATE)
@@ -151,12 +168,25 @@ class ChatActivity : AppCompatActivity() {
 
                     ConstantDefine.FORUM_CHAT_UPDATE -> {
                         val jsonString = msg.obj as String
-                        UserDataModel.setSingletonChatContents(queryChatJson(jsonString))
+                        var array = queryChatJson(jsonString)
+                        if(array.size == UserDataModel.mForumChatContentList?.size){
+                            mHandler?.sendEmptyMessageDelayed(ConstantDefine.PERIODIC_UPDATE_CHAT, 500)
+
+                            return
+                        }
+
+                        UserDataModel.setSingletonChatContents(array)
 
                         val mAdapter = mRecyclerView?.adapter as ChatRecycleViewAdapter
                         mAdapter.updateForumArrayList(UserDataModel.mForumChatContentList)
                         mAdapter.notifyDataSetChanged();
                         mRecyclerView?.scrollToPosition((mRecyclerView?.adapter as ChatRecycleViewAdapter).itemCount-1)
+
+                        var player = MediaPlayer.create(this@ChatActivity, R.raw.messagepop)
+                        player!!.start()
+
+                        mHandler?.sendEmptyMessageDelayed(ConstantDefine.PERIODIC_UPDATE_CHAT, 50)
+
                     }
 
                 }
@@ -165,26 +195,39 @@ class ChatActivity : AppCompatActivity() {
 
         mHandler?.sendEmptyMessageDelayed(ConstantDefine.FORUM_CHAT_QUERY, 1000)
         mButtonSendMessage?.setOnClickListener {
+            findViewById<ProgressBar>(R.id.chat_send).visibility = View.VISIBLE
+            mHandler?.removeMessages(ConstantDefine.FORUM_CHAT_REQUEST_CHAT)
             requestSendChat()
         }
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        mHandler?.removeMessages(ConstantDefine.FORUM_CHAT_REQUEST_CHAT)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.chat_toolbar_menu, menu)
         val icon = menu?.findItem(R.id.room_image)
-        Picasso.with(this)
-            .load(mForumData?.forumPhoto)
-            .into(object : Target {
-                override fun onBitmapLoaded(bitmap: Bitmap, from: LoadedFrom) {
-                    val d: Drawable = BitmapDrawable(resources, bitmap)
-                    icon?.setIcon(d)
-                }
+        val forumPhoto = mForumData?.forumPhoto
+        val target = object : Target {
+            override fun onBitmapLoaded(bitmap: Bitmap?, from: LoadedFrom?) {
+                val d: Drawable = BitmapDrawable(resources, bitmap)
+                icon?.setIcon(d)
+            }
 
-                override fun onBitmapFailed(errorDrawable: Drawable) {}
-                override fun onPrepareLoad(placeHolderDrawable: Drawable) {}
-            })
+            override fun onBitmapFailed(errorDrawable: Drawable?) {}
+            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+        }
+        if(!forumPhoto.equals("null")){
+            val load = Picasso.with(this)
+                .load(forumPhoto)
+
+            load.into(target)
+        } else {
+            icon?.setIcon(null)
+        }
+
         return true
     }
 
@@ -209,6 +252,7 @@ class ChatActivity : AppCompatActivity() {
                 Integer.valueOf(mJsonObject.getString("forum_id")),
                 mJsonObject.getString("user_email"),
                 mJsonObject.getString("user_name"),
+                mJsonObject.getString("user_profile_picture"),
                 mJsonObject.getString("room_name"),
                 mJsonObject.getString("date_chat"),
                 mJsonObject.getString("message"),
@@ -308,6 +352,7 @@ class ChatActivity : AppCompatActivity() {
                  * $userPassword = $_POST["password"]; //login
                 $userEmail = $_POST["email"]; //login
                 $userName = $_POST["user_name"]; //2
+                $userProfilePicture = $_POST["user_profile_picture"]; //2
                 $userRoomName = $_POST["room_name"]; //1
                 $userDateChat = $_POST["date_forum"]; //3
                 $userMessage = $_POST["message"]; //4
@@ -324,6 +369,7 @@ class ChatActivity : AppCompatActivity() {
                 val stringParam = "email=${UserDataModel.mUserInformation?.userEmail}&" +
                         "password=${UserDataModel.mUserInformation?.password}&" +
                         "user_name=${UserDataModel.mUserInformation?.userName}&" +
+                        "user_profile_picture=${UserDataModel.mUserInformation?.userPhoto}&" +
                         "room_name=${mForumData?.forumName}&" +
                         "date_forum=${currentDate}&" +
                         "message=${messageEditText?.text.toString()}&" +
@@ -361,7 +407,7 @@ class ChatActivity : AppCompatActivity() {
                         sb.append(responseLine!!.trim { it <= ' ' })
                     }
                 }
-                    mHandler?.sendEmptyMessage(ConstantDefine.FORUM_CHAT_REQUEST_CHAT)
+                mHandler?.sendEmptyMessage(ConstantDefine.FORUM_CHAT_REQUEST_CHAT)
             } catch (e: Exception) {
                 Log.e("error", "onCreate: " + e.message )
             }

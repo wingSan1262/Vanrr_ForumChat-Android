@@ -11,6 +11,7 @@ import android.service.autofill.UserData
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -72,6 +73,17 @@ class LoginActivity : AppCompatActivity() {
                             startActivity(myIntent)
                             finish()
                         }
+
+                        ConstantDefine.LOGIN_FAILED -> {
+                            val builder = AlertDialog.Builder(this@LoginActivity)
+                            builder.setTitle("Login Failed")
+                            builder.setMessage("You may have entered wrong email (use email not username) or password")
+
+                            builder.setPositiveButton("Got it!") { dialog, which ->
+                                //donothing
+                            }
+                            builder.show()
+                        }
                     }
                 }
             }
@@ -124,9 +136,13 @@ class LoginActivity : AppCompatActivity() {
                             sb.append(responseLine!!.trim { it <= ' ' })
                         }
                     }
-                    val message = mHandler.obtainMessage(ConstantDefine.SAVE_USER_INFORMATION, sb.toString())
-                    if (message != null) {
-                        mHandler.sendMessage(message)
+                    if(sb.toString().contains("fail", false)){
+                        mHandler.sendEmptyMessage(ConstantDefine.LOGIN_FAILED)
+                    } else {
+                        val message = mHandler.obtainMessage(ConstantDefine.SAVE_USER_INFORMATION, sb.toString())
+                        if (message != null) {
+                            mHandler.sendMessage(message)
+                        }
                     }
                 } catch (e: Exception) {
                     Log.e("error", "onCreate: " + e.message )

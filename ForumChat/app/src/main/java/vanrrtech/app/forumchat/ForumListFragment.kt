@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.lang.NullPointerException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.StandardCharsets
@@ -90,11 +91,20 @@ class ForumListFragment (BottomSheetBehavior: BottomSheetBehavior<View?>?, fragm
                         forumRecylerView = mView?.findViewById(R.id.forum_recycler_view)
                         forumRecylerView?.layoutManager = manager
                         forumRecylerView?.layoutManager = horizontalLayout
-                        val adapter = RecycleViewAdapter(UserDataModel.mForumArrayList!!, context!!, this@ForumListFragment)
+                        var adapter : RecycleViewAdapter? = null
+                        try{
+                            adapter = RecycleViewAdapter(UserDataModel.mForumArrayList!!, context!!, this@ForumListFragment)
+                        } catch (e : NullPointerException){
+                            return;
+                        }
 
 
                         forumRecylerView?.adapter = adapter
 
+                    }
+
+                    ConstantDefine.SHOW_TOAST_EMPTY_FORUM_CHAT -> {
+                        Toast.makeText(activity?.applicationContext, "Sorry, there is no forum yet", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -137,10 +147,16 @@ class ForumListFragment (BottomSheetBehavior: BottomSheetBehavior<View?>?, fragm
                         sb.append(responseLine!!.trim { it <= ' ' })
                     }
                 }
-                val message = mHandler.obtainMessage(ConstantDefine.REQUEST_QUERY_AVAILABLE_FORUM, sb.toString())
-                if (message != null) {
-                    mHandler.sendMessage(message)
+
+                if(sb.toString().contains("fail", true)){
+                    mHandler.sendEmptyMessageDelayed(ConstantDefine.SHOW_TOAST_EMPTY_FORUM_CHAT, 500)
+                } else {
+                    val message = mHandler.obtainMessage(ConstantDefine.REQUEST_QUERY_AVAILABLE_FORUM, sb.toString())
+                    if (message != null) {
+                        mHandler.sendMessage(message)
+                    }
                 }
+
             } catch (e: Exception) {
                 Log.e("error", "onCreate: " + e.message )
             }

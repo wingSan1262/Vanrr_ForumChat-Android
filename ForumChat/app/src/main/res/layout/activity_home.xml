@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,25 +18,14 @@
             android:orientation="vertical"
             android:gravity="bottom">
 
+            <include layout="@layout/toolbar_layout" />
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_weight="0.7">
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageButton"
-                    android:src="@drawable/ic_baseline_settings_24"/>
-
-                <TextView
-                    android:id="@+id/logout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="viewEnd"
-                    android:layout_marginEnd="10dp"
-                    android:text="Logout"/>
+                android:layout_weight="0">
 
             </LinearLayout>
 
@@ -55,6 +46,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
+                android:paddingHorizontal="15dp"
+                app:itemIconTint="@drawable/tab_color"
+                app:itemTextColor="@drawable/tab_color"
+                app:itemBackground="@drawable/tab_background"
                 app:menu="@menu/bottom_nav_menu"/>
         </LinearLayout>
 

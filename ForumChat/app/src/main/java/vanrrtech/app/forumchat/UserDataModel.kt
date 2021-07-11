@@ -49,6 +49,7 @@ class UserDataModel {
         @SerializedName("forum_id") val forumId: Int?,
         @SerializedName("user_email") val chatUserEmail: String?,
         @SerializedName("user_name") val chatUserName: String?,
+        @SerializedName("user_profile_picture") val userPicture: String?,
         @SerializedName("room_name") val forumName: String?,
         @SerializedName("date_chat") val dateChat: String?,
         @SerializedName("message") val chatMessage: String?,
