@@ -18,9 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.json.JSONArray
-import org.json.JSONObject
 import java.io.BufferedReader
-import java.io.DataOutputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
@@ -105,45 +103,14 @@ class LoginActivity : AppCompatActivity() {
                     //creating a URL
                     val url = URL("https://vanrrbackend.000webhostapp.com/forum_chat_backend/LogIn.php")
 
-                    //Opening the URL using HttpURLConnection
-                    val conn = url.openConnection() as HttpURLConnection
                     val userEmail = userEmailField?.text.toString()
                     val userPassword = userPasswordField?.text.toString()
-
-                    conn.requestMethod = "POST"
-                    conn.setRequestProperty("Content-Type", "application/json; utf-8")
-                    conn.setRequestProperty("Accept", "application/json")
-                    conn.doOutput = true
-//                    conn.doInput = true
-
-
-//            val urlParameters : String = "user_name=$userEmail&password=$userPassword"
                     val jsonInputString = "{\"user_name\": \"$userEmail\", \"password\": \"$userPassword\"}"
 
-                    conn.outputStream.use { os ->
-                        val input: ByteArray = jsonInputString.toByteArray(StandardCharsets.UTF_8)
-                        os.write(input, 0, input.size)
-                    }
 
-                    //StringBuilder object to read the string from the service
-                    val sb = StringBuilder()
+                    HTTPRESTClient.getHttpRestClient()?.sendPostRequestUsingJsonForm(url, jsonInputString,
+                        mHandler, ConstantDefine.LOGIN_FAILED, ConstantDefine.SAVE_USER_INFORMATION)
 
-                    BufferedReader(
-                        InputStreamReader(conn.inputStream, "utf-8")
-                    ).use { br ->
-                        var responseLine: String? = null
-                        while (br.readLine().also { responseLine = it } != null) {
-                            sb.append(responseLine!!.trim { it <= ' ' })
-                        }
-                    }
-                    if(sb.toString().contains("fail", false)){
-                        mHandler.sendEmptyMessage(ConstantDefine.LOGIN_FAILED)
-                    } else {
-                        val message = mHandler.obtainMessage(ConstantDefine.SAVE_USER_INFORMATION, sb.toString())
-                        if (message != null) {
-                            mHandler.sendMessage(message)
-                        }
-                    }
                 } catch (e: Exception) {
                     Log.e("error", "onCreate: " + e.message )
                 }

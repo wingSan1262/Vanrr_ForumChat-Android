@@ -2,8 +2,6 @@ package vanrrtech.app.forumchat
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -22,12 +20,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 import java.io.*
-import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -180,36 +175,8 @@ class CreateForumChatFragment : Fragment() {
                 val url = URL("https://vanrrbackend.000webhostapp.com/forum_chat_backend/InputForumChat.php")
 
 
-                //Opening the URL using HttpURLConnection
-                val conn = url.openConnection() as HttpURLConnection
-
-                conn.requestMethod = "POST"
-                val os: OutputStream = conn.getOutputStream()
-                val writer = BufferedWriter(
-                    OutputStreamWriter(os, "UTF-8")
-                )
-                writer.write(stringParam)
-
-                writer.flush()
-                writer.close()
-                os.close()
-                conn.connect()
-
-                //StringBuilder object to read the string from the service
-                val sb = StringBuilder()
-
-                BufferedReader(
-                    InputStreamReader(conn.inputStream, "utf-8")
-                ).use { br ->
-                    var responseLine: String? = null
-                    while (br.readLine().also { responseLine = it } != null) {
-                        sb.append(responseLine!!.trim { it <= ' ' })
-                    }
-                }
-                val message = mHandler?.obtainMessage(ConstantDefine.SHOW_REQUEST_FORUM_SUCCEDED, sb.toString())
-                if (message != null) {
-                    mHandler?.sendMessage(message)
-                }
+                HTTPRESTClient.getHttpRestClient()?.sendPostRequest(url, stringParam,
+                    mHandler!!, null, ConstantDefine.SHOW_REQUEST_FORUM_SUCCEDED)
             } catch (e: Exception) {
                 Log.e("error", "onCreate: " + e.message )
             }
