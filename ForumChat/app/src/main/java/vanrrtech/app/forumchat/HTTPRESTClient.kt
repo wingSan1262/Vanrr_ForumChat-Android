@@ -13,7 +13,7 @@ class HTTPRESTClient {
 
         fun getHttpRestClient(): HTTPRESTClient? {
             if (appHttpRestClient == null){
-                appHttpRestClient = appHttpRestClient
+                appHttpRestClient = HTTPRESTClient()
             }
 
             return appHttpRestClient

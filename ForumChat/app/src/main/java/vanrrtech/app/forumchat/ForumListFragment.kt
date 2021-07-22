@@ -19,12 +19,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.json.JSONArray
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.lang.NullPointerException
-import java.net.HttpURLConnection
 import java.net.URL
-import java.nio.charset.StandardCharsets
 import java.util.*
 
 
