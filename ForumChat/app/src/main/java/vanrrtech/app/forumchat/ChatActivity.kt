@@ -136,7 +136,7 @@ class ChatActivity : AppCompatActivity() {
                         var player = MediaPlayer.create(this@ChatActivity, R.raw.messagepop)
                         player!!.start()
 
-                        mHandler?.sendEmptyMessageDelayed(ConstantDefine.PERIODIC_UPDATE_CHAT, 500)
+                        mHandler?.sendEmptyMessageDelayed(ConstantDefine.PERIODIC_UPDATE_CHAT, 2000)
 
                     }
                     ConstantDefine.FORUM_CHAT_QUERY -> {
@@ -184,7 +184,7 @@ class ChatActivity : AppCompatActivity() {
                         var player = MediaPlayer.create(this@ChatActivity, R.raw.messagepop)
                         player!!.start()
 
-                        mHandler?.sendEmptyMessageDelayed(ConstantDefine.PERIODIC_UPDATE_CHAT, 50)
+                        mHandler?.sendEmptyMessageDelayed(ConstantDefine.PERIODIC_UPDATE_CHAT, 500)
 
                     }
 
@@ -201,8 +201,10 @@ class ChatActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        mHandler?.removeCallbacksAndMessages(null)
+        mHandler?.removeMessages(ConstantDefine.PERIODIC_UPDATE_CHAT)
+        mHandler = null
         super.onDestroy()
-        mHandler?.removeMessages(ConstantDefine.FORUM_CHAT_REQUEST_CHAT)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -267,7 +269,7 @@ class ChatActivity : AppCompatActivity() {
 
         when(item?.itemId){
             android.R.id.home -> {
-                onBackPressed()
+                backPressed()
             }
         }
 
@@ -301,6 +303,14 @@ class ChatActivity : AppCompatActivity() {
                 Log.e("error", "onCreate: " + e.message )
             }
         }
+    }
+
+    fun backPressed(){
+        finish()
+    }
+
+    override fun onBackPressed() {
+        backPressed()
     }
 
     fun requestSendChat(){
