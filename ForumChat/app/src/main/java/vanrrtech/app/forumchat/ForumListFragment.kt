@@ -116,46 +116,14 @@ class ForumListFragment (BottomSheetBehavior: BottomSheetBehavior<View?>?, fragm
                 //creating a URL
                 val url = URL("https://vanrrbackend.000webhostapp.com/forum_chat_backend/QueryAvailableForums.php")
 
-                //Opening the URL using HttpURLConnection
-                val conn = url.openConnection() as HttpURLConnection
+                // create the json format
                 val userEmail = UserDataModel.mUserInformation?.userEmail
                 val userPassword = UserDataModel.mUserInformation?.password
-
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json; utf-8");
-                conn.setRequestProperty("Accept", "application/json");
-                conn.setDoOutput(true)
-                conn.doInput = true
-
-
-//            val urlParameters : String = "user_name=$userEmail&password=$userPassword"
                 var jsonInputString = "{\"user_name\": \"$userEmail\", \"password\": \"$userPassword\"}";
 
-                conn.getOutputStream().use { os ->
-                    val input: ByteArray = jsonInputString.toByteArray(StandardCharsets.UTF_8)
-                    os.write(input, 0, input.size)
-                }
-
-                //StringBuilder object to read the string from the service
-                val sb = StringBuilder()
-
-                BufferedReader(
-                    InputStreamReader(conn.getInputStream(), "utf-8")
-                ).use { br ->
-                    var responseLine: String? = null
-                    while (br.readLine().also { responseLine = it } != null) {
-                        sb.append(responseLine!!.trim { it <= ' ' })
-                    }
-                }
-
-                if(sb.toString().contains("fail", true)){
-                    mHandler.sendEmptyMessageDelayed(ConstantDefine.SHOW_TOAST_EMPTY_FORUM_CHAT, 500)
-                } else {
-                    val message = mHandler.obtainMessage(ConstantDefine.REQUEST_QUERY_AVAILABLE_FORUM, sb.toString())
-                    if (message != null) {
-                        mHandler.sendMessage(message)
-                    }
-                }
+                // send a Post request for getting the chat from yours truly
+                HTTPRESTClient.getHttpRestClient()?.sendPostRequestUsingJsonForm(url, jsonInputString, mHandler,
+                    ConstantDefine.SHOW_TOAST_EMPTY_FORUM_CHAT, ConstantDefine.REQUEST_QUERY_AVAILABLE_FORUM)
 
             } catch (e: Exception) {
                 Log.e("error", "onCreate: " + e.message )

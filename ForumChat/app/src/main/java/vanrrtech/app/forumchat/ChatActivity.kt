@@ -34,7 +34,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import java.io.*
-import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
 import java.text.SimpleDateFormat
@@ -117,7 +116,7 @@ class ChatActivity : AppCompatActivity() {
                             Toast.makeText(this@ChatActivity, "No chat here!", Toast.LENGTH_LONG).show()
                             return
                         }
-                        UserDataModel.setSingletonChatContents(queryChatJson(jsonString))
+                        UserDataModel.setSingletonChatContents(parsingChatJson(jsonString))
 
                         val manager = LinearLayoutManager(this@ChatActivity)
                         var horizontalLayout = LinearLayoutManager(
@@ -168,7 +167,7 @@ class ChatActivity : AppCompatActivity() {
 
                     ConstantDefine.FORUM_CHAT_UPDATE -> {
                         val jsonString = msg.obj as String
-                        var array = queryChatJson(jsonString)
+                        var array = parsingChatJson(jsonString)
                         if(array.size == UserDataModel.mForumChatContentList?.size){
                             mHandler?.sendEmptyMessageDelayed(ConstantDefine.PERIODIC_UPDATE_CHAT, 500)
 
@@ -231,7 +230,7 @@ class ChatActivity : AppCompatActivity() {
         return true
     }
 
-    fun queryChatJson (jsonString : String): ArrayList<UserDataModel.ForumChatContents> {
+    fun parsingChatJson (jsonString : String): ArrayList<UserDataModel.ForumChatContents> {
         var jsonArray = JSONArray(jsonString)
         var mForumChatContent = ArrayList<UserDataModel.ForumChatContents>()
         for (i in 0..jsonArray.length()-1){
@@ -295,36 +294,9 @@ class ChatActivity : AppCompatActivity() {
                 //creating a URL
                 val url = URL("https://vanrrbackend.000webhostapp.com/forum_chat_backend/QueryAvailableChat.php")
 
-                //Opening the URL using HttpURLConnection
-                val conn = url.openConnection() as HttpURLConnection
+                HTTPRESTClient.getHttpRestClient()?.sendPostRequest(url, stringParam, mHandler!!, null, message)
 
-                conn.requestMethod = "POST"
-                val os: OutputStream = conn.getOutputStream()
-                val writer = BufferedWriter(
-                    OutputStreamWriter(os, "UTF-8")
-                )
-                writer.write(stringParam)
 
-                writer.flush()
-                writer.close()
-                os.close()
-                conn.connect()
-
-                //StringBuilder object to read the string from the service
-                val sb = StringBuilder()
-
-                BufferedReader(
-                    InputStreamReader(conn.inputStream, "utf-8")
-                ).use { br ->
-                    var responseLine: String? = null
-                    while (br.readLine().also { responseLine = it } != null) {
-                        sb.append(responseLine!!.trim { it <= ' ' })
-                    }
-                }
-                val message = mHandler?.obtainMessage(message, sb.toString())
-                if (message != null) {
-                    mHandler?.sendMessage(message)
-                }
             } catch (e: Exception) {
                 Log.e("error", "onCreate: " + e.message )
             }
@@ -381,33 +353,8 @@ class ChatActivity : AppCompatActivity() {
                 //creating a URL
                 val url = URL("https://vanrrbackend.000webhostapp.com/forum_chat_backend/InputChatToForum.php")
 
-                //Opening the URL using HttpURLConnection
-                val conn = url.openConnection() as HttpURLConnection
-
-                conn.requestMethod = "POST"
-                val os: OutputStream = conn.getOutputStream()
-                val writer = BufferedWriter(
-                    OutputStreamWriter(os, "UTF-8")
-                )
-                writer.write(stringParam)
-
-                writer.flush()
-                writer.close()
-                os.close()
-                conn.connect()
-
-                //StringBuilder object to read the string from the service
-                val sb = StringBuilder()
-
-                BufferedReader(
-                    InputStreamReader(conn.inputStream, "utf-8")
-                ).use { br ->
-                    var responseLine: String? = null
-                    while (br.readLine().also { responseLine = it } != null) {
-                        sb.append(responseLine!!.trim { it <= ' ' })
-                    }
-                }
-                mHandler?.sendEmptyMessage(ConstantDefine.FORUM_CHAT_REQUEST_CHAT)
+                HTTPRESTClient.getHttpRestClient()?.sendPostRequest(url, stringParam,
+                    mHandler!!, null, ConstantDefine.FORUM_CHAT_REQUEST_CHAT)
             } catch (e: Exception) {
                 Log.e("error", "onCreate: " + e.message )
             }
