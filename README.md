@@ -39,4 +39,11 @@ Whenever the room long clicked it show a bottom sheet detail screen
 <img src="Screenshot_2021-07-28-16-38-40-171_vanrrtech.app.forumchat.png" width="200">
 
 This is the room chat
+You can send plain text chat or with images
 <img src="Screenshot_2021-07-28-16-37-27-005_vanrrtech.app.forumchat.png" width="200">
+
+You can also check your detail profile by clicking account on navigation bar
+<img src="Screenshot_2021-07-28-16-39-07-524_vanrrtech.app.forumchat.png" width="200">
+
+You can create new forum by enter the create function
+<img src="Screenshot_2021-07-28-16-39-02-968_vanrrtech.app.forumchat.png" width="200">
