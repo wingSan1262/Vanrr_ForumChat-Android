@@ -7,7 +7,7 @@ This app is still in before alpha
 Started as initial project
   <img src="" width="200">
 
-<img src=Screenshot_2021-07-28-16-39-29-344_vanrrtech.app.forumchat.png"" width="200">
+<img src="Screenshot_2021-07-28-16-39-29-344_vanrrtech.app.forumchat.png" width="200">
 Screenshot_2021-07-28-16-39-29-344_vanrrtech.app.forumchat.png
 
 About BadCode.
