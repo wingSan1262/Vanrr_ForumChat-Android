@@ -127,8 +127,13 @@ class CreateForumChatFragment : Fragment() {
             resultLauncher.launch(intent)
         }
         view.findViewById<Button>(R.id.create_room_button).setOnClickListener {
-            requestCreateForum()
+            callLoginResister()
         }
+    }
+
+    fun callLoginResister() {
+        val myIntent = Intent (activity, LoginSignUpActivity::class.java)
+        startActivity(myIntent)
     }
 
     fun requestCreateForum(){

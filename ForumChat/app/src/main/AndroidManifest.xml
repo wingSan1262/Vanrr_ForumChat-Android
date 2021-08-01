@@ -13,6 +13,10 @@
         android:theme="@style/Theme.ForumChat"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".LoginSignUpActivity"
+            android:label="@string/title_activity_login_register_activty"
+            android:theme="@style/Theme.ForumChat.NoActionBar"></activity>
+        <activity
             android:name=".ChatActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             />
