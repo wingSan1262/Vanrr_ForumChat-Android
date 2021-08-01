@@ -14,8 +14,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".LoginSignUpActivity"
-            android:label="@string/title_activity_login_register_activty"
-            android:theme="@style/Theme.ForumChat.NoActionBar"></activity>
+            android:label="@string/title_activity_login_sign_up_activity"
+            android:theme="@style/Theme.ForumChat.NoActionBar" />
         <activity
             android:name=".ChatActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
