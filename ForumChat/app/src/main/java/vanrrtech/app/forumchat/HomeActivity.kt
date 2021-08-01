@@ -92,7 +92,7 @@ class HomeActivity : AppCompatActivity() {
             }
             R.id.log_out -> {
             UserDataModel.logoutUserData(applicationContext)
-            var myIntent = Intent (this, LoginActivity::class.java)
+            var myIntent = Intent (this, LoginSignUpActivity::class.java)
             startActivity(myIntent)
             finish()
             }
