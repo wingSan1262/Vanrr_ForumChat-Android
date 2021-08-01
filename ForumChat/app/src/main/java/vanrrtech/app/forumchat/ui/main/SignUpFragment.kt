@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import vanrrtech.app.forumchat.databinding.FragmentSignUpActivityBinding
+import vanrrtech.app.forumchat.databinding.FragmentSignUpBinding
 
 /**
  * A placeholder fragment containing a simple view.
@@ -16,7 +16,7 @@ import vanrrtech.app.forumchat.databinding.FragmentSignUpActivityBinding
 class SignUpFragment : Fragment() {
 
     private lateinit var pageViewModel: PageViewModel
-    private var _binding: FragmentSignUpActivityBinding? = null
+    private var _binding: FragmentSignUpBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -34,10 +34,10 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentSignUpActivityBinding.inflate(inflater, container, false)
+        _binding = FragmentSignUpBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        val textView: TextView = binding.sectionLabel
+        val textView: TextView = binding.textView7
         pageViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
