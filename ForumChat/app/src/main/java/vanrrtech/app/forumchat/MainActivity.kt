@@ -17,9 +17,18 @@ class MainActivity : AppCompatActivity() {
 
 
         mHandler?.postDelayed({
-            val mIntent = Intent (this, LoginActivity::class.java)
-            startActivity(mIntent)
-            finish()
+
+            if(UserDataModel.isUserDataSaved(this.applicationContext)){
+                UserDataModel.setSingletonUserData(UserDataModel.obtainUserData(applicationContext))
+                val myIntent = Intent (this, HomeActivity::class.java)
+                startActivity(myIntent)
+                finish()
+            } else {
+                val mIntent = Intent (this, LoginSignUpActivity::class.java)
+                startActivity(mIntent)
+                finish()
+            }
+
         },2000)
     }
 }

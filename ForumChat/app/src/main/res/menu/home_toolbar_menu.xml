@@ -12,9 +12,8 @@
 <!--        android:title="Profile">-->
 <!--    </item>-->
     <item
-        android:id="@+id/room_image"
-        android:icon="@drawable/ic_launcher_foreground"
-        app:showAsAction="ifRoom|withText"
-        android:title="">
+        android:id="@+id/log_out"
+        app:showAsAction="always"
+        android:title="@string/log_out">
     </item>
 </menu>

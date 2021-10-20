@@ -2,4 +2,8 @@
     <string name="app_name">ForumChat</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="log_out">Log Out</string>
+    <string name="title_activity_login_sign_up_activity">LoginRegisterActivity</string>
+    <string name="tab_text_1">Login</string>
+    <string name="tab_text_2">Sign Up</string>
 </resources>

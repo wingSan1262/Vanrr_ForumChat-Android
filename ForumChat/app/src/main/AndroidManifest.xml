@@ -12,10 +12,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ForumChat"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ChatActivity"></activity>
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".LoginSignUpActivity"
+            android:label="@string/title_activity_login_sign_up_activity"
+            android:theme="@style/Theme.ForumChat.NoActionBar" />
+        <activity
+            android:name=".ChatActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            />
+        <activity
+            android:name=".HomeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            />
+        <activity
+            android:name=".LoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            />
+        <activity
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

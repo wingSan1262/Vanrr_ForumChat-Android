@@ -19,11 +19,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.json.JSONArray
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
+import java.lang.NullPointerException
 import java.net.URL
-import java.nio.charset.StandardCharsets
 import java.util.*
 
 
@@ -90,11 +87,20 @@ class ForumListFragment (BottomSheetBehavior: BottomSheetBehavior<View?>?, fragm
                         forumRecylerView = mView?.findViewById(R.id.forum_recycler_view)
                         forumRecylerView?.layoutManager = manager
                         forumRecylerView?.layoutManager = horizontalLayout
-                        val adapter = RecycleViewAdapter(UserDataModel.mForumArrayList!!, context!!, this@ForumListFragment)
+                        var adapter : RecycleViewAdapter? = null
+                        try{
+                            adapter = RecycleViewAdapter(UserDataModel.mForumArrayList!!, context!!, this@ForumListFragment)
+                        } catch (e : NullPointerException){
+                            return;
+                        }
 
 
                         forumRecylerView?.adapter = adapter
 
+                    }
+
+                    ConstantDefine.SHOW_TOAST_EMPTY_FORUM_CHAT -> {
+                        Toast.makeText(activity?.applicationContext, "Sorry, there is no forum yet", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -106,41 +112,15 @@ class ForumListFragment (BottomSheetBehavior: BottomSheetBehavior<View?>?, fragm
                 //creating a URL
                 val url = URL("https://vanrrbackend.000webhostapp.com/forum_chat_backend/QueryAvailableForums.php")
 
-                //Opening the URL using HttpURLConnection
-                val conn = url.openConnection() as HttpURLConnection
+                // create the json format
                 val userEmail = UserDataModel.mUserInformation?.userEmail
                 val userPassword = UserDataModel.mUserInformation?.password
-
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json; utf-8");
-                conn.setRequestProperty("Accept", "application/json");
-                conn.setDoOutput(true)
-                conn.doInput = true
-
-
-//            val urlParameters : String = "user_name=$userEmail&password=$userPassword"
                 var jsonInputString = "{\"user_name\": \"$userEmail\", \"password\": \"$userPassword\"}";
 
-                conn.getOutputStream().use { os ->
-                    val input: ByteArray = jsonInputString.toByteArray(StandardCharsets.UTF_8)
-                    os.write(input, 0, input.size)
-                }
+                // send a Post request for getting the chat from yours truly
+                HTTPRESTClient.getHttpRestClient()?.sendPostRequestUsingJsonForm(url, jsonInputString, mHandler,
+                    ConstantDefine.SHOW_TOAST_EMPTY_FORUM_CHAT, ConstantDefine.REQUEST_QUERY_AVAILABLE_FORUM)
 
-                //StringBuilder object to read the string from the service
-                val sb = StringBuilder()
-
-                BufferedReader(
-                    InputStreamReader(conn.getInputStream(), "utf-8")
-                ).use { br ->
-                    var responseLine: String? = null
-                    while (br.readLine().also { responseLine = it } != null) {
-                        sb.append(responseLine!!.trim { it <= ' ' })
-                    }
-                }
-                val message = mHandler.obtainMessage(ConstantDefine.REQUEST_QUERY_AVAILABLE_FORUM, sb.toString())
-                if (message != null) {
-                    mHandler.sendMessage(message)
-                }
             } catch (e: Exception) {
                 Log.e("error", "onCreate: " + e.message )
             }
