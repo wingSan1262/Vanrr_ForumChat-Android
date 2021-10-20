@@ -16,32 +16,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:visibility="gone"
+            <androidx.cardview.widget.CardView
                 android:id="@+id/create_loading"
-                android:background="#FFFFFF"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:padding="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                app:cardCornerRadius="5dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/title">
-
-                <ProgressBar
+                app:layout_constraintTop_toTopOf="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:background="@color/purple_200"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="30dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="true"/>
-                <TextView
-                    android:textStyle="bold"
-                    android:id="@+id/create_account_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Creating Account"/>
+                    android:layout_height="wrap_content">
 
-            </LinearLayout>
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="true"/>
+                    <TextView
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:id="@+id/create_account_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Creating Account"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
 
             <TextView
                 android:id="@+id/title"
