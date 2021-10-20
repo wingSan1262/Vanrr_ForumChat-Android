@@ -93,14 +93,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 findViewById<TextView>(R.id.email_side_bar).text = UserDataModel.mUserInformation?.userEmail
             }
             R.id.log_out -> {
-<<<<<<< HEAD
-            UserDataModel.logoutUserData(applicationContext)
-            var myIntent = Intent (this, LoginSignUpActivity::class.java)
-            startActivity(myIntent)
-            finish()
-=======
                 onLogout()
->>>>>>> ForumChat-AddSideBar
             }
         }
 
@@ -146,7 +139,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun onLogout(){
         UserDataModel.logoutUserData(applicationContext)
-        var myIntent = Intent (this, LoginActivity::class.java)
+        var myIntent = Intent (this, LoginSignUpActivity::class.java)
         startActivity(myIntent)
         finish()
     }

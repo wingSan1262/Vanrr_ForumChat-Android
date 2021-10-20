@@ -194,9 +194,11 @@ class ChatActivity : AppCompatActivity() {
 
         mHandler?.sendEmptyMessageDelayed(ConstantDefine.FORUM_CHAT_QUERY, 1000)
         mButtonSendMessage?.setOnClickListener {
-            findViewById<ProgressBar>(R.id.chat_send).visibility = View.VISIBLE
-            mHandler?.removeMessages(ConstantDefine.FORUM_CHAT_REQUEST_CHAT)
-            requestSendChat()
+            if(!messageEditText?.text.toString().equals("") || imageHolder != null){
+                findViewById<ProgressBar>(R.id.chat_send).visibility = View.VISIBLE
+                mHandler?.removeMessages(ConstantDefine.FORUM_CHAT_REQUEST_CHAT)
+                requestSendChat()
+            }
         }
     }
 

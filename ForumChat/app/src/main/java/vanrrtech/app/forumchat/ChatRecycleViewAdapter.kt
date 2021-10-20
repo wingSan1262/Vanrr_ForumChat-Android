@@ -57,8 +57,13 @@ class ChatRecycleViewAdapter (ForumArrayList : ArrayList<UserDataModel.ForumChat
             holder.chatPicture?.visibility = View.VISIBLE
         }
 
-        Picasso.with(mContext).load(chatContent?.userPicture).into(holder.profilePicture)
-        holder.profilePicture?.visibility = View.VISIBLE
+        if(chatContent?.userPicture!!.contains("http", true)
+            && (chatContent?.userPicture!!.contains("jpg", true)
+                    || chatContent?.userPicture!!.contains("png", true)
+                    || chatContent?.userPicture!!.contains("jpeg", true))){
+            Picasso.with(mContext).load(chatContent?.userPicture!!).into(holder.profilePicture)
+            holder.profilePicture?.visibility = View.VISIBLE
+        }
 
 //        Picasso.with(mContext).load(chatContent?.chatImageLink).into(holder.chatPicture)
 

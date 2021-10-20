@@ -18,5 +18,9 @@ class ConstantDefine {
         val PERIODIC_UPDATE_CHAT = 662
 
 
+        val CREATE_ACCOUNT = 677
+        val CREATE_ACCOUNT_FAIL = 676
+
+
     }
 }
