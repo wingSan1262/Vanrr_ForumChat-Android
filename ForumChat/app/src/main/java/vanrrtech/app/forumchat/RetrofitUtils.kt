@@ -10,7 +10,7 @@ object RetrofitUtils {
         val client = OkHttpClient.Builder().build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://vanrrbackend.000webhostapp.com") // change this IP for testing by your actual machine IP
+            .baseUrl("https://${HTTPRESTClient.theDomain}") // change this IP for testing by your actual machine IP
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

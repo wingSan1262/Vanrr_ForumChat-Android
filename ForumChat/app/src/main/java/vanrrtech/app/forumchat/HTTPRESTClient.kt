@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets
 class HTTPRESTClient {
 
     companion object{
+        val theDomain = "vanrr.online"
+
         var appHttpRestClient : HTTPRESTClient? = null
 
         fun getHttpRestClient(): HTTPRESTClient? {

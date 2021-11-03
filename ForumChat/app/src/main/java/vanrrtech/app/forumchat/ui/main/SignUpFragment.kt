@@ -3,11 +3,9 @@ package vanrrtech.app.forumchat.ui.main
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
+import android.os.*
 import android.provider.MediaStore
 import android.text.InputType
 import android.util.Base64
@@ -141,7 +139,14 @@ class SignUpFragment : Fragment() {
             try {
                 var myImageString64:String? = null
                 if(uriImageHolder != null){
-                    val myBitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uriImageHolder)
+                    var myBitmap : Bitmap? = null
+                    if(Build.VERSION.SDK_INT > 27) {
+                        val source = ImageDecoder.createSource(requireContext().contentResolver, uriImageHolder!!)
+                        val bitmap = ImageDecoder.decodeBitmap(source)
+                        myBitmap = bitmap
+                    } else{
+                        myBitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uriImageHolder)
+                    }
                     val myByteArrayOutputStream = ByteArrayOutputStream()
                     myBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, myByteArrayOutputStream)
                     var myByte = myByteArrayOutputStream.toByteArray()
@@ -160,7 +165,7 @@ class SignUpFragment : Fragment() {
                         "information=${_binding?.selfDescriptionField?.text.toString()}&" +
                         "image_base64=${myImageString64}"
                 //creating a URL
-                val url = URL("https://vanrrbackend.000webhostapp.com/forum_chat_backend/RegisterAccount.php")
+                val url = URL("https://${HTTPRESTClient.theDomain}/forum_chat_backend/RegisterAccount.php")
 
 
                 HTTPRESTClient.getHttpRestClient()?.sendPostRequest(url, stringParam,

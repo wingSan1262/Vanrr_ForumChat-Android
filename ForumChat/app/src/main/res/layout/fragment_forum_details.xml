@@ -12,9 +12,20 @@
         android:fillViewport="true">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bottom_sheet_forum_details"
-            android:background="@color/black"
+            android:background="@color/purple_700"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <ImageView
+                android:background="@drawable/ic_baseline_keyboard_arrow_down_24"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintVertical_bias="0.02"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/delete_forum_btn"

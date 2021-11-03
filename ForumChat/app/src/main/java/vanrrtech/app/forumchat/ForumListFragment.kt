@@ -110,7 +110,7 @@ class ForumListFragment (BottomSheetBehavior: BottomSheetBehavior<View?>?, fragm
         scope.launch {
             try {
                 //creating a URL
-                val url = URL("https://vanrrbackend.000webhostapp.com/forum_chat_backend/QueryAvailableForums.php")
+                val url = URL("https://${HTTPRESTClient.theDomain}/forum_chat_backend/QueryAvailableForums.php")
 
                 // create the json format
                 val userEmail = UserDataModel.mUserInformation?.userEmail

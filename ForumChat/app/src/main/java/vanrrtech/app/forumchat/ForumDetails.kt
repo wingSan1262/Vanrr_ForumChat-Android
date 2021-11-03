@@ -137,7 +137,7 @@ class ForumDetails : Fragment() {
                         "room_name=${forumData?.forumName}&" +
                         "room_id=${forumData?.forumId}"
                 //creating a URL
-                val url = URL("https://vanrrbackend.000webhostapp.com/forum_chat_backend/DeleteForum.php")
+                val url = URL("https://${HTTPRESTClient.theDomain}/forum_chat_backend/DeleteForum.php")
 
 
                 HTTPRESTClient.getHttpRestClient()?.sendPostRequest(url, stringParam,

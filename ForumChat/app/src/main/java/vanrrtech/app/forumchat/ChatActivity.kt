@@ -296,7 +296,7 @@ class ChatActivity : AppCompatActivity() {
 
 
                 //creating a URL
-                val url = URL("https://vanrrbackend.000webhostapp.com/forum_chat_backend/QueryAvailableChat.php")
+                val url = URL("https://${HTTPRESTClient.theDomain}/forum_chat_backend/QueryAvailableChat.php")
 
                 HTTPRESTClient.getHttpRestClient()?.sendPostRequest(url, stringParam, mHandler!!, null, message)
 
@@ -350,20 +350,22 @@ class ChatActivity : AppCompatActivity() {
 
                 val imageName = imageName?.text.toString() + "-" + mForumData?.forumName+ "-" + currentDate
 
+                val myMessage = URLEncoder.encode(messageEditText?.text.toString(),"utf-8")
+
                 val stringParam = "email=${UserDataModel.mUserInformation?.userEmail}&" +
                         "password=${UserDataModel.mUserInformation?.password}&" +
                         "user_name=${UserDataModel.mUserInformation?.userName}&" +
                         "user_profile_picture=${UserDataModel.mUserInformation?.userPhoto}&" +
                         "room_name=${mForumData?.forumName}&" +
                         "date_forum=${currentDate}&" +
-                        "message=${messageEditText?.text.toString()}&" +
+                        "message=${myMessage}&" +
                         "image_base64=${myImageString64}&" +
                         "image_name=${imageName}&" +
                         "forum_id=${mForumData?.forumId}"
 
 
                 //creating a URL
-                val url = URL("https://vanrrbackend.000webhostapp.com/forum_chat_backend/InputChatToForum.php")
+                val url = URL("https://${HTTPRESTClient.theDomain}/forum_chat_backend/InputChatToForum.php")
 
                 HTTPRESTClient.getHttpRestClient()?.sendPostRequest(url, stringParam,
                     mHandler!!, null, ConstantDefine.FORUM_CHAT_REQUEST_CHAT)

@@ -172,7 +172,7 @@ class CreateForumChatFragment : Fragment() {
                         "details=${myRequesData?.forumDetails}&" +
                         "image_base64=${myRequesData?.forumPhoto}"
                 //creating a URL
-                val url = URL("https://vanrrbackend.000webhostapp.com/forum_chat_backend/InputForumChat.php")
+                val url = URL("https://${HTTPRESTClient.theDomain}/forum_chat_backend/InputForumChat.php")
 
 
                 HTTPRESTClient.getHttpRestClient()?.sendPostRequest(url, stringParam,

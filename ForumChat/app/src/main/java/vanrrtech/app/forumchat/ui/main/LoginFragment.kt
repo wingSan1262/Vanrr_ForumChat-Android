@@ -129,7 +129,7 @@ class LoginFragment : Fragment() {
             scope.launch {
                 try {
                     //creating a URL
-                    val url = URL("https://vanrrbackend.000webhostapp.com/forum_chat_backend/LogIn.php")
+                    val url = URL("https://${HTTPRESTClient.theDomain}/forum_chat_backend/LogIn.php")
 
                     val userEmail = userEmailField?.text.toString()
                     val userPassword = userPasswordField?.text.toString()
